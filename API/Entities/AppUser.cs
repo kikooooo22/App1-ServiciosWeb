@@ -2,6 +2,6 @@ namespace API.Entities;
 
 public class AppUser
 {
-    public string Id { get; set;}
+    public int Id { get; set;}
     public required string UserName { get; set;}
 }
