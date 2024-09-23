@@ -15,13 +15,11 @@ export class AppComponent implements OnInit{
   title = 'Coco';
   users: any;
 
-  ngOnInit(): void{
-    // localhost:5212 
+  ngOnInit(): void {
     this.http.get("https://localhost:5001/api/v1/users").subscribe({
-      next: (response) => {this.users = response},
-      error: (error) => {console.log(error)},
-      complete: () => {console.log("Request completed!")},
+      next: (response) => { this.users = response },
+      error: (error) => { console.log(error) },
+      complete: () => { console.log("Request completed!") }
     });
   }
-
 }
