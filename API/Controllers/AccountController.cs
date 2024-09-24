@@ -3,15 +3,19 @@ using System.Text;
 using API.Data;
 using API.DTOs;
 using API.Entities;
+using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-public class AccountController(DataContext context) : BaseApiController
+public class AccountController(
+    DataContext context,
+    ITokenService tokenService
+    ) : BaseApiController
 {
     [HttpPost("register")]
-    public async Task<ActionResult<AppUser>> RegisterAsync(RegisterRequest request){
+    public async Task<ActionResult<UserResponse>> RegisterAsync(RegisterRequest request){
         
         // Verificamos si el usuario ya esta registrado 
         if ( await UserExisteAsync(request.Username))
@@ -32,11 +36,15 @@ public class AccountController(DataContext context) : BaseApiController
         context.Users.Add(user);
         await context.SaveChangesAsync();
 
-        return user;
+        return new UserResponse{
+            Username = user.UserName,
+            Token = tokenService.CreateToken(user)
+        };
+
     }//RegisterAsync
 
     [HttpPost("login")]
-    public async Task<ActionResult<AppUser>> LoginAsync(LoginRequest request)
+    public async Task<ActionResult<UserResponse>> LoginAsync(LoginRequest request)
     {
         // Verificamos que el usuario este en nuestra base de datos
         var user = await context.Users.FirstOrDefaultAsync(x => 
@@ -60,7 +68,10 @@ public class AccountController(DataContext context) : BaseApiController
             }
         }
 
-        return user; 
+        return new UserResponse{
+            Username = user.UserName,
+            Token = tokenService.CreateToken(user)
+        };
 
     }
 

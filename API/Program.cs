@@ -13,6 +13,7 @@ builder.Services.AddDbContext<DataContext>(opt =>
 });
 
 builder.Services.AddCors();
+
 // En donde encuentre 'ITokenService' lo remplaza por (injecta) 'TokenService'
 builder.Services.AddScoped<ITokenService, TokenService>(); 
 
