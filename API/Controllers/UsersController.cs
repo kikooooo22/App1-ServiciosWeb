@@ -19,7 +19,7 @@ public class UsersController : BaseApiController
     }
 
     [AllowAnonymous]
-    [HttpGet] // api/v1/users
+    [HttpGet] // api/users
     public async Task<ActionResult<IEnumerable<AppUser>>> GetUsersAsync(){
         
         var users = await _context.Users.ToListAsync();

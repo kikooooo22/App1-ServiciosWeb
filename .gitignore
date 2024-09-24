@@ -482,4 +482,9 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# dotnet ef database
 *.db
+
+# SSL Certs
+client/ssl/*.pem
