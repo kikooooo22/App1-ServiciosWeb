@@ -4,21 +4,22 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
+
 public class AccountController(
     DataContext context,
-    ITokenService tokenService
-    ) : BaseApiController
+    ITokenService tokenService ) : BaseApiController
 {
     [HttpPost("register")]
     public async Task<ActionResult<UserResponse>> RegisterAsync(RegisterRequest request){
         
         // Verificamos si el usuario ya esta registrado 
-        if ( await UserExisteAsync(request.Username))
+        if ( await UserExistsAsync(request.Username))
         {
             return BadRequest("Username already exist");
         } 
@@ -72,9 +73,8 @@ public class AccountController(
             Username = user.UserName,
             Token = tokenService.CreateToken(user)
         };
-
     }
 
-    private async Task<bool> UserExisteAsync(string username) =>
+    private async Task<bool> UserExistsAsync(string username) =>
         await context.Users.AnyAsync(user => user.UserName.ToLower() == username.ToLower());
 }
