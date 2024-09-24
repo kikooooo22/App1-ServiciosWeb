@@ -1,4 +1,6 @@
 using API.Data;
+using API.Interfaces;
+using API.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,8 @@ builder.Services.AddDbContext<DataContext>(opt =>
 });
 
 builder.Services.AddCors();
+// En donde encuentre 'ITokenService' lo remplaza por (injecta) 'TokenService'
+builder.Services.AddScoped<ITokenService, TokenService>(); 
 
 var app = builder.Build();
 

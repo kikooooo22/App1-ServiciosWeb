@@ -13,11 +13,13 @@ public class AccountController(DataContext context) : BaseApiController
     [HttpPost("register")]
     public async Task<ActionResult<AppUser>> RegisterAsync(RegisterRequest request){
         
+        // Verificamos si el usuario ya esta registrado 
         if ( await UserExisteAsync(request.Username))
         {
             return BadRequest("Username already exist");
         } 
 
+        // Se crea el salt (No olvidemos que es objeto para hashear)
         using var hmac = new HMACSHA512();
 
         // using: Una vez se ejecuta, se libera la memoria 
