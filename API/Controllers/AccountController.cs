@@ -31,6 +31,35 @@ public class AccountController(DataContext context) : BaseApiController
         await context.SaveChangesAsync();
 
         return user;
+    }//RegisterAsync
+
+    [HttpPost("login")]
+    public async Task<ActionResult<AppUser>> LoginAsync(LoginRequest request)
+    {
+        // Verificamos que el usuario este en nuestra base de datos
+        var user = await context.Users.FirstOrDefaultAsync(x => 
+        x.UserName.ToLower() == request.Username.ToLower());
+
+        if (user == null)
+        {
+            return Unauthorized("Invalid username or password");
+        }
+        
+        // Generamos la semilla con el PasswordSalt del usuario  
+        using var hmac = new HMACSHA512(user.PasswordSalt);
+        // Encriptamos el password con dicha semilla del PasswordSalt
+        var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password));
+
+        // Comparar cada uno de los bytes generados 
+        // Password ya Hasheado - vs - Password que Hasheamos nosotros mismos (con el Salt)
+        for(int i = 0; i < computeHash.Length; i++){
+            if(computeHash[i] != user.PasswordHash[i]){
+                return Unauthorized("Invalid username or password"); 
+            }
+        }
+
+        return user; 
+
     }
 
     private async Task<bool> UserExisteAsync(string username) =>
