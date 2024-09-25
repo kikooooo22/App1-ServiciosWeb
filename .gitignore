@@ -488,3 +488,5 @@ $RECYCLE.BIN/
 
 # SSL Certs
 client/ssl/*.pem
+client/ssl/localhost-key.pem
+client/ssl/localhost.pem
