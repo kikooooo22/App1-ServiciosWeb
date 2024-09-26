@@ -487,6 +487,7 @@ $RECYCLE.BIN/
 *.db
 
 # SSL Certs
+client/*.pem
 client/ssl/*.pem
 client/ssl/localhost-key.pem
 client/ssl/localhost.pem
