@@ -1,3 +1,4 @@
+namespace API.Controllers;
 using System.Security.Cryptography;
 using System.Text;
 using API.Data;
@@ -7,8 +8,6 @@ using API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-namespace API.Controllers;
 
 
 public class AccountController(
