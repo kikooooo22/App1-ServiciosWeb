@@ -1,9 +1,8 @@
+namespace API.Extensions;
 using API.Data;
 using API.Interfaces;
 using API.Services;
 using Microsoft.EntityFrameworkCore;
-
-namespace API.Extensions;
 
 public static class ApplicationServiceExtensions
 {
@@ -11,15 +10,11 @@ public static class ApplicationServiceExtensions
     {
         // Add services to the container.
         services.AddControllers();
-        services.AddDbContext<DataContext>(opt => 
-        {
-            opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
-        });
-
+        services.AddDbContext<DataContext>(opt => opt.UseSqlite(config.GetConnectionString("DefaultConnection")));
         services.AddCors();
 
         // En donde encuentre 'ITokenService' lo remplaza por (injecta) 'TokenService'
-        services.AddScoped<ITokenService, TokenService>(); 
+        services.AddScoped<ITokenService, TokenService>();
 
         return services;
     }
