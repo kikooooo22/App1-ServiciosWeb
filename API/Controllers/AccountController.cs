@@ -22,25 +22,27 @@ public class AccountController(
             return BadRequest("Username already exist");
         }
 
-        // Se crea el salt (No olvidemos que es objeto para hashear)
-        using var hmac = new HMACSHA512();
+        return Ok();
 
-        // using: Una vez se ejecuta, se libera la memoria 
-        var user = new AppUser
-        {
-            UserName = request.Username,
-            PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
-            PasswordSalt = hmac.Key
-        };
+        // // Se crea el salt (No olvidemos que es objeto para hashear)
+        // using var hmac = new HMACSHA512();
 
-        context.Users.Add(user);
-        await context.SaveChangesAsync();
+        // // using: Una vez se ejecuta, se libera la memoria 
+        // var user = new AppUser
+        // {
+        //     UserName = request.Username,
+        //     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(request.Password)),
+        //     PasswordSalt = hmac.Key
+        // };
 
-        return new UserResponse
-        {
-            Username = user.UserName,
-            Token = tokenService.CreateToken(user)
-        };
+        // context.Users.Add(user);
+        // await context.SaveChangesAsync();
+
+        // return new UserResponse
+        // {
+        //     Username = user.UserName,
+        //     Token = tokenService.CreateToken(user)
+        // };
 
     }//RegisterAsync
 
