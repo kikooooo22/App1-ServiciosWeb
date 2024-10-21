@@ -491,3 +491,5 @@ client/*.pem
 client/ssl/*.pem
 client/ssl/localhost-key.pem
 client/ssl/localhost.pem
+API/dating.db-shm
+API/dating.db-wal
