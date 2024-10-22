@@ -1,5 +1,5 @@
 namespace API.Interfaces;
-using API.Entities;
+using API.DataEntities;
 
 public interface ITokenService
 {
