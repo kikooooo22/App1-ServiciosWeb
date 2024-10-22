@@ -2,6 +2,7 @@ namespace API.Controllers;
 using API.Data;
 using API.DataEntities;
 using API.DTOs;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,17 +12,22 @@ public class UsersController : BaseApiController
 {
 
     private readonly IUserRepository _repository;
+    private readonly IMapper _mapper;
 
-    public UsersController(IUserRepository repository)
+    public UsersController(IUserRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     [HttpGet] // api/users
     public async Task<ActionResult<IEnumerable<MemberResponse>>> GetAllAsync()
     {
         var users = await _repository.GetAllAsync();
-        return Ok(users);
+
+        var response = _mapper.Map<IEnumerable<MemberResponse>>(users);
+
+        return Ok(response);
     }
 
     [HttpGet("{id:int}")]// api/users/2
@@ -34,7 +40,7 @@ public class UsersController : BaseApiController
             return NotFound();
         }
 
-        return user;
+        return _mapper.Map<MemberResponse>(user);
     }
 
     [HttpGet("{username}")] // api/users/Patricio
@@ -47,6 +53,6 @@ public class UsersController : BaseApiController
             return NotFound();
         }
 
-        return user;
+        return _mapper.Map<MemberResponse>(user);
     }
 }
