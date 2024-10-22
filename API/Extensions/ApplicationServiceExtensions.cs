@@ -16,6 +16,7 @@ public static class ApplicationServiceExtensions
         // En donde encuentre 'ITokenService' lo remplaza por (injecta) 'TokenService'
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         return services;
     }
