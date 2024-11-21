@@ -1,21 +1,23 @@
+namespace API.Services;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using API.Entities;
+using API.DataEntities;
 using API.Interfaces;
 using Microsoft.IdentityModel.Tokens;
-
-namespace API.Services;
 
 public class TokenService(IConfiguration config) : ITokenService
 {
     public string CreateToken(AppUser user)
     {
         // '??' Si no encuentra la clave "TokenKey" en la configuración, lanza una excepción con el mensaje "Token not found"
-        var tokenKey = config["TokenKey"] ?? throw new Exception("Token not found");
+        var tokenKey = config["TokenKey"] ?? throw new ArgumentException("Token not found");
 
         // Verificamos que la longitud del "TokenKey" sea al menos de 64 caracteres, si no es así, lanza una excepción
-        if (tokenKey.Length < 64) throw new Exception("Token key too short");
+        if (tokenKey.Length < 64)
+        {
+            throw new ArgumentException("Token key too short");
+        }
 
         // Convertimos el TokenKey a un arreglo de bytes usando UTF-8 y lo usamos para crear una clave de seguridad simétrica
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey));
@@ -32,7 +34,8 @@ public class TokenService(IConfiguration config) : ITokenService
         // - Los claims (identidad del usuario)
         // - Tiempo de expiración (7 días desde el momento actual)
         // - Las credenciales de firma
-        var tokenDescrpitor = new SecurityTokenDescriptor{
+        var tokenDescrpitor = new SecurityTokenDescriptor
+        {
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = creds
