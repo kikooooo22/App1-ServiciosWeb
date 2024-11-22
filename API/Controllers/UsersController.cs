@@ -1,8 +1,6 @@
 namespace API.Controllers;
 using API.Data;
-using API.DataEntities;
 using API.DTOs;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +19,7 @@ public class UsersController : BaseApiController
     [HttpGet] // api/users
     public async Task<ActionResult<IEnumerable<MemberResponse>>> GetAllAsync()
     {
-        var members = await _repository.GetAllAsync();
+        var members = await _repository.GetMembersAsync();
 
         return Ok(members);
     }
