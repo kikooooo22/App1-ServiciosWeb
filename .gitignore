@@ -494,3 +494,7 @@ client/ssl/localhost.pem
 API/dating.db-shm
 API/dating.db-wal
 client/ssl/localhost.crt
+
+# Tests 
+coveragereport
+TestResult
