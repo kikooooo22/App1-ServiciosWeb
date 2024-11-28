@@ -14,9 +14,13 @@ public class TestHelper
         }
     }
     public HttpClient Client { get; set; }
-    private TestHelper()
+    public IServiceProvider Services { get; set; }
+
+    public TestHelper()
     {
-        // place for instance initialization code
-        Client = new APIWebApplicationFactory<Startup>().CreateDefaultClient();
+        // Inicializa el cliente y el contenedor de servicios
+        var factory = new APIWebApplicationFactory<Startup>();
+        Client = factory.CreateClient();
+        Services = factory.Services; // Asigna el contenedor de servicios
     }
 }
